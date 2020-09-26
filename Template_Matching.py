@@ -8,7 +8,7 @@ location_list = []
 def match_image_multi(screencap,imgtemplate):
     searching = bool(True)
     while searching == True:
-        im = Image.open(imgtemplate)
+        im = Image.open(screencap)
         img_rgb = np.array(im)
         img_gray = cv.cvtColor(img_rgb, cv.COLOR_BGR2GRAY)
         template = cv.imread(imgtemplate, 0)
@@ -16,18 +16,21 @@ def match_image_multi(screencap,imgtemplate):
         threshold = 0.8
         res = cv.matchTemplate(img_gray, template, cv.TM_CCOEFF_NORMED)
         min_val, max_val, min_loc, max_loc = cv.minMaxLoc(res)
-        if max_val < threshold:
+        print(max_val)
+        if max_val > threshold:
             location_list.append(max_loc)
-            im = ImageDraw.rectangle(im, max_loc[0],max_loc[1],min_loc[0],min_loc[1], fill=None, outline=None, width=1)
+            draw = ImageDraw.Draw(im)
+            draw.rectangle([(max_loc[0],max_loc[1]),(min_loc[0],min_loc[1])], fill='#ffffff', outline='#ffffff', width=1)
             searching = True
-            
+        else: 
             im.show()
-        
-        return max_loc
+            searching = False
+            return []
+    return max_loc
 
 def match_image(screencap,imgtemplate):
     
-    im = Image.open(imgtemplate)
+    im = Image.open(screencap)
     img_rgb = np.array(im)
     img_gray = cv.cvtColor(img_rgb, cv.COLOR_BGR2GRAY)
     template = cv.imread(imgtemplate, 0)
@@ -40,5 +43,5 @@ def match_image(screencap,imgtemplate):
     return max_loc
 
 item = "Lupo_Icon"
-pos = match_image('Current.png', 'Lupo_Icon.png')
+pos = match_image_multi('Current.png', 'Lupo_Icon.png')
 print(pos)
