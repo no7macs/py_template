@@ -21,7 +21,7 @@ def match_image_multi(screencap,imgtemplate):
             draw = ImageDraw.Draw(im)
             draw.rectangle([(max_loc[0],max_loc[1]),(max_loc[0]+x,max_loc[1]+y)], fill='#ffffff', outline='#ffffff', width=1)
             searching = True
-            location_list.append([(max_loc[0],max_loc[1]),(x,y)])
+            location_list.append(max_loc)
         else: searching = False
     return location_list
 
