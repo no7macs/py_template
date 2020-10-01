@@ -3,9 +3,8 @@ import numpy as np
 from matplotlib import pyplot as plt
 from PIL import Image, ImageGrab, ImageDraw
 
-location = []
 location_list = []
-def match_image_multi(screencap,imgtemplate):
+def match_image_multi(screencap,imgtemplate, **kwargs):
     searching = bool(True)
     im = Image.open(screencap)
     while searching == True:
@@ -24,7 +23,7 @@ def match_image_multi(screencap,imgtemplate):
         else: searching = False
     return location_list
 
-def match_image(screencap,imgtemplate):
+def match_image(screencap,imgtemplate,**kwargs):
     im = Image.open(screencap)
     img_rgb = np.array(im)
     img_gray = cv.cvtColor(img_rgb, cv.COLOR_BGR2GRAY)
@@ -37,6 +36,13 @@ def match_image(screencap,imgtemplate):
         return []
     return max_loc
 
-item = "Lupo_Icon"
-pos = match_image_multi('Current.png', 'Lupo_Icon.png')
-print(pos)
+def image_grab(**kwargs):
+    screenshot = ImageGrab.grab(bbox = (None))
+    screenshot.show()
+
+
+
+image_grab()
+#item = "Lupo_Icon"
+#pos = match_image_multi('Current.png', 'Lupo_Icon.png',)
+#print(pos)
