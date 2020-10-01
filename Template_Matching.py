@@ -5,6 +5,9 @@ from PIL import Image, ImageGrab, ImageDraw
 
 location_list = []
 def match_image_multi(screencap,imgtemplate, **kwargs):
+    if kwargs.get('screencap',None) == None: im = image_grab(size = kwargs.get('size',None))
+    else: im = Image.open(kwargs.get('screencap'))
+
     searching = bool(True)
     im = Image.open(screencap)
     while searching == True:
@@ -24,10 +27,9 @@ def match_image_multi(screencap,imgtemplate, **kwargs):
     return location_list
 
 def match_image(imgtemplate,**kwargs):
-    #screencap = kwargs.get('screencap',)
-    if kwargs.get('screencap',None) == None:
-        im = image_grab()
+    if kwargs.get('screencap',None) == None: im = image_grab(size = kwargs.get('size',None))
     else: im = Image.open(kwargs.get('screencap'))
+
     #im = Image.open(screencap)
     img_rgb = np.array(im)
     img_gray = cv.cvtColor(img_rgb, cv.COLOR_BGR2GRAY)
