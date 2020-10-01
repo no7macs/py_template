@@ -23,8 +23,12 @@ def match_image_multi(screencap,imgtemplate, **kwargs):
         else: searching = False
     return location_list
 
-def match_image(screencap,imgtemplate,**kwargs):
-    im = Image.open(screencap)
+def match_image(imgtemplate,**kwargs):
+    #screencap = kwargs.get('screencap',)
+    if kwargs.get('screencap',None) == None:
+        im = image_grab()
+    else: im = Image.open(kwargs.get('screencap'))
+    #im = Image.open(screencap)
     img_rgb = np.array(im)
     img_gray = cv.cvtColor(img_rgb, cv.COLOR_BGR2GRAY)
     template = cv.imread(imgtemplate, 0)
@@ -37,12 +41,12 @@ def match_image(screencap,imgtemplate,**kwargs):
     return max_loc
 
 def image_grab(**kwargs):
-    screenshot = ImageGrab.grab(bbox = (None))
+    screenshot = ImageGrab.grab(bbox = (kwargs.get('size',None)))
     screenshot.show()
+    return(screenshot)
 
-
-
-image_grab()
-#item = "Lupo_Icon"
-#pos = match_image_multi('Current.png', 'Lupo_Icon.png',)
-#print(pos)
+##USED FOR TESTING##
+#image_grab()
+item = "Lupo_Icon"
+pos = match_image('Lupo_Icon.png',screencap='./Current.png')
+print(pos)
