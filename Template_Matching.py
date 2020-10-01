@@ -46,8 +46,9 @@ def image_grab(**kwargs):
     screenshot.show()
     return(screenshot)
 
-##USED FOR TESTING##
-#image_grab()
-item = "Lupo_Icon"
-pos = match_image_multi('Lupo_Icon.png',screencap='./Current.png')
-print(pos)
+def test():
+    ##USED FOR TESTING##
+    #image_grab()
+    item = "Lupo_Icon"
+    pos = match_image_multi('Lupo_Icon.png',screencap='./Current.png')
+    print(pos)
