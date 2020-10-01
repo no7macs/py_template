@@ -4,12 +4,11 @@ from matplotlib import pyplot as plt
 from PIL import Image, ImageGrab, ImageDraw
 
 location_list = []
-def match_image_multi(screencap,imgtemplate, **kwargs):
+def match_image_multi(imgtemplate, **kwargs):
     if kwargs.get('screencap',None) == None: im = image_grab(size = kwargs.get('size',None))
     else: im = Image.open(kwargs.get('screencap'))
 
     searching = bool(True)
-    im = Image.open(screencap)
     while searching == True:
         img_rgb = np.array(im)
         img_gray = cv.cvtColor(img_rgb, cv.COLOR_BGR2GRAY)
@@ -50,5 +49,5 @@ def image_grab(**kwargs):
 ##USED FOR TESTING##
 #image_grab()
 item = "Lupo_Icon"
-pos = match_image('Lupo_Icon.png',screencap='./Current.png')
+pos = match_image_multi('Lupo_Icon.png',screencap='./Current.png')
 print(pos)
