@@ -21,7 +21,7 @@ def match_image_multi(imgtemplate, **kwargs):
             searching = True
             draw = ImageDraw.Draw(im)
             draw.rectangle([(max_loc[0],max_loc[1]),(max_loc[0]+x,max_loc[1]+y)], fill='#ffffff', outline='#ffffff', width=1)
-            location_list.append(max_loc)
+            location_list.append([(max_loc[0],max_loc[1]),(x,y)])
         else: searching = False
     return location_list
 
@@ -52,3 +52,4 @@ def test():
     item = "Lupo_Icon"
     pos = match_image_multi('Lupo_Icon.png',screencap='./Current.png')
     print(pos)
+#test()
