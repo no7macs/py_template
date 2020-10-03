@@ -43,7 +43,6 @@ def match_image(imgtemplate,**kwargs):
 
 def image_grab(**kwargs):
     screenshot = ImageGrab.grab(bbox = (kwargs.get('size',None)))
-    screenshot.show()
     return(screenshot)
 
 def test():
