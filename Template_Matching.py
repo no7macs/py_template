@@ -44,10 +44,3 @@ def match_image(imgtemplate,**kwargs):
 def image_grab(**kwargs):
     screenshot = ImageGrab.grab(bbox = (kwargs.get('size',None)))
     return(screenshot)
-
-def test():
-    ##USED FOR TESTING##
-    #image_grab()
-    pos = match_image_multi('Lupo_Icon.png',screencap='./Current.png')
-    print(pos)
-#test()
