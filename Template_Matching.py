@@ -2,6 +2,8 @@ import cv2 as cv
 from numpy import shape, array
 from PIL import Image, ImageGrab, ImageDraw
 
+Debug = bool(True)
+
 location_list = []
 def match_image_multi(imgtemplate, **kwargs):
     if kwargs.get('screencap',None) == None: im = image_grab(size = kwargs.get('size',None))
@@ -37,19 +39,25 @@ def match_image(imgtemplate,**kwargs):
     template = cv.imread(imgtemplate, 0)
     try:
         x,y = template.shape[::-1]
+    except: 
+        if Debug == True: print('Failed to find shape Template.Shape most likely caused by image not being found') 
+        else: pass
+    try:
         threshold = 0.8
         res = cv.matchTemplate(img_gray, template, cv.TM_CCOEFF_NORMED)
         min_val, max_val, min_loc, max_loc = cv.minMaxLoc(res)
         if max_val < threshold:
             return []
         else: return max_loc
-    except: pass
+    except: 
+        if Debug == True: print('Could not process template, is either caused by Template.shape failing or issue with either image') 
+        else: pass
     return []
 
 def image_grab(**kwargs):
     try:
-        screenshot = ImageGrab.grab(bbox = (kwargs.get('size',None)))
-        return(screenshot)
+        return(ImageGrab.grab(bbox = (kwargs.get('size',None))))
     except: 
-        print('failed to grab screen')
+        if Debug == True: print('failed to grab screen')
+        else: pass
         return(None)
