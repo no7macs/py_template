@@ -43,10 +43,9 @@ def match_image(imgtemplate,**kwargs):
         if Debug == True: print('Failed to find shape Template.Shape most likely caused by image not being found') 
         else: pass
     try:
-        threshold = 0.8
         if kwargs.get('threshold',None) == None: threshold = 0.8
         else: threshold = Image.open(kwargs.get('threshold'))
-        
+
         res = cv.matchTemplate(img_gray, template, cv.TM_CCOEFF_NORMED)
         min_val, max_val, min_loc, max_loc = cv.minMaxLoc(res)
         if max_val < threshold:
