@@ -11,12 +11,32 @@ def match_image_multi(imgtemplate, **kwargs):
 
     searching = bool(True)
     while searching == True:
-        img_rgb = array(im)
-        img_gray = cv.cvtColor(img_rgb, cv.COLOR_BGR2GRAY)
-        template = cv.imread(imgtemplate, 0)
+        #img_rgb = array(im)
+        #img_gray = cv.cvtColor(img_rgb, cv.COLOR_BGR2GRAY)
+        #template = cv.imread(imgtemplate, 0)
+        #try:
+        #    x,y = template.shape[::-1]
+        #    threshold = 0.8
+        #    res = cv.matchTemplate(img_gray, template, cv.TM_CCOEFF_NORMED)
+        #    min_val, max_val, min_loc, max_loc = cv.minMaxLoc(res)
+        #    if max_val > threshold:
+        #        searching = True
+        #        draw = ImageDraw.Draw(im)
+        #        draw.rectangle([(max_loc[0],max_loc[1]),(max_loc[0]+x,max_loc[1]+y)], fill='#ffffff', outline='#ffffff', width=1)
+        #        location_list.append([(max_loc[0],max_loc[1]),(x,y)])
+        #    else: searching = False
+        #except: pass
+        #return location_list
+
         try:
             x,y = template.shape[::-1]
-            threshold = 0.8
+        except: 
+            if Debug == True: print('Failed to find shape Template.Shape most likely caused by image not being found') 
+            else: pass
+        try:
+            if kwargs.get('threshold',None) == None: threshold = 0.8
+            else: threshold = Image.open(kwargs.get('threshold'))
+
             res = cv.matchTemplate(img_gray, template, cv.TM_CCOEFF_NORMED)
             min_val, max_val, min_loc, max_loc = cv.minMaxLoc(res)
             if max_val > threshold:
@@ -25,7 +45,9 @@ def match_image_multi(imgtemplate, **kwargs):
                 draw.rectangle([(max_loc[0],max_loc[1]),(max_loc[0]+x,max_loc[1]+y)], fill='#ffffff', outline='#ffffff', width=1)
                 location_list.append([(max_loc[0],max_loc[1]),(x,y)])
             else: searching = False
-        except: pass
+        except: 
+            if Debug == True: print('Could not process template, is either caused by Template.shape failing or issue with either image') 
+            else: pass
         return location_list
 
 def match_image(imgtemplate,**kwargs):
