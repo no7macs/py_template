@@ -42,8 +42,9 @@ def match_image_multi(imgtemplate, **kwargs):
 
 def match_image(imgtemplate,**kwargs):
     if kwargs.get('screencap',None) == None: im = image_grab(size = kwargs.get('size',None))
-    else: im = Image.open(kwargs.get('screencap'))
-    
+    else: 
+        try: im = Image.open(kwargs.get('screencap',None))
+        except: im = kwargs.get('screencap',None)
     if im == None: return([])
 
     img_rgb = array(im)
