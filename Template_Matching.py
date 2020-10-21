@@ -9,6 +9,12 @@ def match_image_multi(imgtemplate, **kwargs):
     if kwargs.get('screencap',None) == None: im = image_grab(size = kwargs.get('size',None))
     else: im = Image.open(kwargs.get('screencap'))
 
+    if im == None: return([])
+
+    img_rgb = array(im)
+    img_gray = cv.cvtColor(img_rgb, cv.COLOR_BGR2GRAY)
+    template = cv.imread(imgtemplate, 0)
+
     searching = bool(True)
     while searching == True:
 
