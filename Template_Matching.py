@@ -5,9 +5,9 @@ from PIL import Image, ImageGrab, ImageDraw
 Debug = bool(True)
 
 location_list = []
-def match_image_multi(imgtemplate, **kwargs):
-    if kwargs.get('screencap',None) == None: im = image_grab(size = kwargs.get('size',None))
-    else: im = Image.open(kwargs.get('screencap'))
+def match_image_multi(imgtemplate, screencap = None, size = (1920,1080), **kwargs):
+    if screencap == None: im = image_grab(size if not size == None else (1920,1080)) 
+    else: im = screencap
 
     if im == None: return([])
 
