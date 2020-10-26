@@ -5,7 +5,7 @@ from PIL import Image, ImageGrab, ImageDraw
 Debug = bool(True)
 
 location_list = []
-def match_image_multi(imgtemplate, screencap = None, size = (1920,1080), **kwargs):
+def match_image_multi(imgtemplate, screencap = None, size = (1920,1080), threshhold = 0.8, **kwargs):
     if screencap == None: im = image_grab(size if not size == None else (1920,1080)) 
     else: im = screencap
 
@@ -22,10 +22,9 @@ def match_image_multi(imgtemplate, screencap = None, size = (1920,1080), **kwarg
             x,y = template.shape[::-1]
         except: 
             if Debug == True: print('Failed to find shape Template.Shape most likely caused by image not being found') 
-            else: pass
+            else: pass 
         try:
-            if kwargs.get('threshold',None) == None: threshold = 0.8
-            else: threshold = Image.open(kwargs.get('threshold'))
+            threshold = 0.8 if threshhold==None else 0.8
 
             res = cv.matchTemplate(img_gray, template, cv.TM_CCOEFF_NORMED)
             min_val, max_val, min_loc, max_loc = cv.minMaxLoc(res)
