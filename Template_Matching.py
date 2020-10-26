@@ -6,8 +6,7 @@ Debug = bool(True)
 
 location_list = []
 def match_image_multi(imgtemplate, screencap = None, size = (1920,1080), threshhold = 0.8, **kwargs):
-    if screencap == None: im = image_grab(size if not size == None else (1920,1080)) 
-    else: im = screencap
+    im = image_grab(size if not size == None else (1920,1080)) if screencap == None else screencap
 
     if im == None: return([])
 
@@ -39,11 +38,9 @@ def match_image_multi(imgtemplate, screencap = None, size = (1920,1080), threshh
             else: pass
         return location_list
 
-def match_image(imgtemplate,**kwargs):
-    if kwargs.get('screencap',None) == None: im = image_grab(size = kwargs.get('size',None))
-    else: 
-        try: im = Image.open(kwargs.get('screencap',None))
-        except: im = kwargs.get('screencap',None)
+def match_image(imgtemplate, screencap = None, size = (1920,1080), threshhold = 0.8, **kwargs):
+    im = image_grab(size if not size == None else (1920,1080)) if screencap == None else screencap
+
     if im == None: return([])
 
     img_rgb = array(im)
@@ -55,8 +52,7 @@ def match_image(imgtemplate,**kwargs):
         if Debug == True: print('Failed to find shape Template.Shape most likely caused by image not being found') 
         else: pass
     try:
-        if kwargs.get('threshold',None) == None: threshold = 0.8
-        else: threshold = Image.open(kwargs.get('threshold'))
+        threshold = 0.8 if threshhold==None else 0.8
 
         res = cv.matchTemplate(img_gray, template, cv.TM_CCOEFF_NORMED)
         min_val, max_val, min_loc, max_loc = cv.minMaxLoc(res)
@@ -68,9 +64,9 @@ def match_image(imgtemplate,**kwargs):
         else: pass
     return []
 
-def image_grab(**kwargs):
+def image_grab(size):
     try:
-        return(ImageGrab.grab(bbox = (kwargs.get('size',None))))
+        return(ImageGrab.grab(bbox = (size if size==None else(1920,1080))))
     except: 
         if Debug == True: print('failed to grab screen')
         else: pass
