@@ -2,9 +2,10 @@ import cv2 as cv
 from numpy import shape, array
 from PIL import ImageGrab, ImageDraw
 
+global Debug
+
 class Template_Matching:
     Debug = bool(True)
-    location_list = []
 
     def __init__(self,multi_size):
         #Should be able to declare all stuff ahead of time to lower on overhead
@@ -17,6 +18,7 @@ class Template_Matching:
 
         template = cv.imread(imgtemplate, 0)
 
+        location_list = []
         searching = bool(True)
         while searching == True:
 
@@ -68,10 +70,10 @@ class Template_Matching:
             else: pass
         return []
 
-    def image_grab(self, size):
-        try:
-            return(ImageGrab.grab(bbox = (size if not size is None else(None))))
-        except: 
-            if Debug == True: print('failed to grab screen')
-            else: pass
-            return(None)
+def image_grab(size):
+    try:
+        return(ImageGrab.grab(bbox = (size if not size is None else(None))))
+    except: 
+        if Debug == True: print('failed to grab screen')
+        else: pass
+        return(None)
