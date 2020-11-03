@@ -1,16 +1,17 @@
 import cv2 as cv
 from numpy import shape, array
-from PIL import Image, ImageGrab, ImageDraw
+from PIL import ImageGrab, ImageDraw
 
 class Template_Matching:
     Debug = bool(True)
     location_list = []
 
     def __init__(self,multi_size):
+        #Should be able to declare all stuff ahead of time to lower on overhead
         self.multi_size = bool(multi_size)
 
-    def match_image_multi(imgtemplate, screencap = None, size = None, threshhold = 0.8, **kwargs):
-        im = image_grab(size) if screencap == None else screencap
+    def match_image_multi(self, imgtemplate, screencap = None, size = None, threshhold = 0.8, **kwargs):
+        im = image_grab(size) if screencap is None else screencap
 
         if im == None: return([])
 
@@ -28,7 +29,7 @@ class Template_Matching:
                 if Debug == True: print('Failed to find shape Template.Shape most likely caused by image not being found') 
                 else: pass 
             try:
-                threshold = 0.8 if threshhold==None else 0.8
+                threshold = 0.8 if threshhold is None else 0.8
 
                 res = cv.matchTemplate(img_gray, template, cv.TM_CCOEFF_NORMED)
                 min_val, max_val, min_loc, max_loc = cv.minMaxLoc(res)
@@ -46,21 +47,16 @@ class Template_Matching:
                 else: pass
         return location_list
 
-    def match_image(imgtemplate, screencap = None, size = None, threshhold = 0.8, **kwargs):
-        im = image_grab(size) if screencap == None else screencap
+    def match_image(self, imgtemplate, screencap = None, size = None, threshhold = 0.8, **kwargs):
+        im = image_grab(size) if screencap is None else screencap
 
-        if im == None: return([])
+        if im is None: return([])
 
         img_rgb = array(im)
         img_gray = cv.cvtColor(img_rgb, cv.COLOR_BGR2GRAY)
         template = cv.imread(imgtemplate, 0)
         try:
-            x,y = template.shape[::-1]
-        except: 
-            if Debug == True: print('Failed to find shape Template.Shape most likely caused by image not being found') 
-            else: pass
-        try:
-            threshold = 0.8 if threshhold==None else 0.8
+            threshold = 0.8 if threshhold is None else 0.8
 
             res = cv.matchTemplate(img_gray, template, cv.TM_CCOEFF_NORMED)
             min_val, max_val, min_loc, max_loc = cv.minMaxLoc(res)
@@ -72,9 +68,9 @@ class Template_Matching:
             else: pass
         return []
 
-    def image_grab(size):
+    def image_grab(self, size):
         try:
-            return(ImageGrab.grab(bbox = (size if not size==None else(None))))
+            return(ImageGrab.grab(bbox = (size if not size is None else(None))))
         except: 
             if Debug == True: print('failed to grab screen')
             else: pass
