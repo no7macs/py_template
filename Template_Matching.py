@@ -2,6 +2,8 @@ import cv2 as cv
 from numpy import shape, array
 from PIL import Image, ImageGrab, ImageDraw
 
+global Debug
+
 class Template_Matching:
     Debug = bool(True)
     location_list = []
@@ -9,7 +11,7 @@ class Template_Matching:
     def __init__(self,multi_size):
         self.multi_size = bool(multi_size)
 
-    def match_image_multi(imgtemplate, screencap = None, size = None, threshhold = 0.8, **kwargs):
+    def match_image_multi(self, imgtemplate, screencap = None, size = None, threshhold = 0.8, **kwargs):
         im = image_grab(size) if screencap == None else screencap
 
         if im == None: return([])
@@ -46,7 +48,7 @@ class Template_Matching:
                 else: pass
         return location_list
 
-    def match_image(imgtemplate, screencap = None, size = None, threshhold = 0.8, **kwargs):
+    def match_image(self, imgtemplate, screencap = None, size = None, threshhold = 0.8, **kwargs):
         im = image_grab(size) if screencap == None else screencap
 
         if im == None: return([])
@@ -72,10 +74,10 @@ class Template_Matching:
             else: pass
         return []
 
-    def image_grab(size):
-        try:
-            return(ImageGrab.grab(bbox = (size if not size==None else(None))))
-        except: 
-            if Debug == True: print('failed to grab screen')
-            else: pass
-            return(None)
+def image_grab(size):
+    try:
+        return(ImageGrab.grab(bbox = (size if not size==None else(None))))
+    except: 
+        if Debug == True: print('failed to grab screen')
+        else: pass
+        return(None)
