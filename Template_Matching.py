@@ -4,7 +4,7 @@ from PIL import ImageGrab, ImageDraw
 
 Debug = bool(True)
 
-class Template_Matching:
+class Template_Matching():
     Debug = bool(True)
 
     def __init__(self, imgtemplate = None, screencap = None, size = None, threshhold = 0.8, **kwargs):
@@ -14,8 +14,14 @@ class Template_Matching:
         self.size = size
         self.threshhold = threshhold
 
-    def match_image_multi(self, imgtemplate = self.imgtemplate if not self.imgtemplate is None else None, screencap = self.screencap if not self.screencap is None else None, size = self.size if not self.size is None else None, 
-                        threshhold = self.threshold if not self.threshhold is None else None, **kwargs):
+    def match_image_multi(self, imgtemplate = None, screencap = None, size = None, threshhold = 0.8, **kwargs):
+    
+        imgtemplate = self.imgtemplate if not self.imgtemplate is None else imgtemplate
+        imgtemplate = self.imgtemplate if not self.imgtemplate is None else imgtemplate
+        screencap = self.screencap if not self.screencap is None else screencap
+        size = self.size if not self.size is None else size
+        threshhold = self.threshold if not self.threshhold is None else threshhold
+
         im = image_grab(size) if screencap is None else screencap
 
         if im is None: return([])
@@ -52,8 +58,13 @@ class Template_Matching:
                 else: pass
         return location_list
 
-    def match_image(self, imgtemplate = self.imgtemplate if not self.imgtemplate is None else None, screencap = self.screencap if not self.screencap is None else None, size = self.size if not self.size is None else None, 
-                    threshhold = self.threshold if not self.threshhold is None else None, **kwargs):
+    def match_image(self, imgtemplate = None, screencap = None, size = None, threshhold = 0.8, **kwargs):
+        imgtemplate = self.imgtemplate if not self.imgtemplate is None else imgtemplate
+        imgtemplate = self.imgtemplate if not self.imgtemplate is None else imgtemplate
+        screencap = self.screencap if not self.screencap is None else screencap
+        size = self.size if not self.size is None else size
+        threshhold = self.threshhold if not self.threshhold is None else threshhold
+        
         im = image_grab(size) if screencap is None else screencap
 
         if im is None: return([])
@@ -81,3 +92,7 @@ def image_grab(size):
         if Debug == True: print('failed to grab screen')
         else: pass
         return(None)
+
+if __name__ == "__main__":
+    objName = Template_Matching()
+    objName.match_image() 
