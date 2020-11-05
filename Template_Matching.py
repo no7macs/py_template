@@ -14,19 +14,16 @@ class Template_Matching():
         self.size = size
         self.threshhold = threshhold
 
+    def templatesize(self, imgtemplate = None): return (cv.imread(self.imgtemplate if not self.imgtemplate is None else imgtemplate , 0)).shape[::-1]
+
     def match_image_multi(self, imgtemplate = None, screencap = None, size = None, threshhold = 0.8, **kwargs):
     
-        imgtemplate = self.imgtemplate if not self.imgtemplate is None else imgtemplate
-        imgtemplate = self.imgtemplate if not self.imgtemplate is None else imgtemplate
-        screencap = self.screencap if not self.screencap is None else screencap
-        size = self.size if not self.size is None else size
-        threshhold = self.threshold if not self.threshhold is None else threshhold
-
-        im = image_grab(size) if screencap is None else screencap
+        threshhold = self.threshhold if not self.threshhold is None else threshhold if threshhold is None else 0.8
+        im = image_grab(self.size if not self.size is None else size) if not self.screencap is None else (self.screencap if not self.screencap is None else screencap)
 
         if im is None: return([])
 
-        template = cv.imread(imgtemplate if not imgtemplate is None else None , 0)
+        template = cv.imread(self.imgtemplate if not self.imgtemplate is None else imgtemplate , 0)
 
         location_list = []
         searching = bool(True)
@@ -41,12 +38,11 @@ class Template_Matching():
                 if Debug == True: print('Failed to find shape Template.Shape most likely caused by image not being found') 
                 else: pass 
             try:
-                threshold = 0.8 if threshhold is None else 0.8
 
                 res = cv.matchTemplate(img_gray, template, cv.TM_CCOEFF_NORMED)
                 min_val, max_val, min_loc, max_loc = cv.minMaxLoc(res)
 
-                if max_val > threshold:
+                if max_val < threshhold:
                     searching = True
                     draw = ImageDraw.Draw(im)
                     draw.rectangle([(max_loc[0],max_loc[1]),(max_loc[0]+x,max_loc[1]+y)], fill='#ffffff', outline='#ffffff', width=1)
@@ -56,14 +52,12 @@ class Template_Matching():
             except IOError: 
                 if Debug == True: print('Could not process template, is either caused by Template.shape failing or issue with either image') 
                 else: pass
-        return location_list
+        return (location_list)
 
     def match_image(self, imgtemplate = None, screencap = None, size = None, threshhold = 0.8, **kwargs):
-        imgtemplate = self.imgtemplate if not self.imgtemplate is None else imgtemplate
-        imgtemplate = self.imgtemplate if not self.imgtemplate is None else imgtemplate
-        screencap = self.screencap if not self.screencap is None else screencap
-        size = self.size if not self.size is None else size
-        threshhold = self.threshhold if not self.threshhold is None else threshhold
+        
+        threshhold = self.threshhold if not self.threshhold is None else threshhold if threshhold is None else 0.8
+        im = image_grab(self.size if not self.size is None else size) if not self.screencap is None else (self.screencap if not self.screencap is None else screencap)
         
         im = image_grab(size) if screencap is None else screencap
 
@@ -71,13 +65,11 @@ class Template_Matching():
 
         img_rgb = array(im)
         img_gray = cv.cvtColor(img_rgb, cv.COLOR_BGR2GRAY)
-        template = cv.imread(imgtemplate if not imgtemplate is None else None , 0)
+        template = cv.imread(self.imgtemplate if not self.imgtemplate is None else imgtemplate, 0)
         try:
-            threshold = 0.8 if threshhold is None else 0.8
-
             res = cv.matchTemplate(img_gray, template, cv.TM_CCOEFF_NORMED)
             min_val, max_val, min_loc, max_loc = cv.minMaxLoc(res)
-            if max_val < threshold:
+            if max_val < threshhold:
                 return []
             else: return (max_loc)
         except IOError: 
