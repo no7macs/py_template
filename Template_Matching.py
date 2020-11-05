@@ -14,8 +14,8 @@ class Template_Matching:
         self.size = size
         self.threshhold = threshhold
 
-    def match_image_multi(self, imgtemplate = self.imgtemplate if not imgtemplate is None else None, screencap = self.screencap if not screencap is None else None, size = size if not size is None else None, 
-                        threshhold = self.threshold if not threshhold is None else None, **kwargs):
+    def match_image_multi(self, imgtemplate = self.imgtemplate if not self.imgtemplate is None else None, screencap = self.screencap if not self.screencap is None else None, size = self.size if not self.size is None else None, 
+                        threshhold = self.threshold if not self.threshhold is None else None, **kwargs):
         im = image_grab(size) if screencap is None else screencap
 
         if im is None: return([])
@@ -52,8 +52,8 @@ class Template_Matching:
                 else: pass
         return location_list
 
-    def match_image(self, imgtemplate = self.imgtemplate if not imgtemplate is None else None, screencap = self.screencap if not screencap is None else None, 
-                    size = size if not size is None else None, threshhold = self.threshold if not threshhold is None else None, **kwargs):
+    def match_image(self, imgtemplate = self.imgtemplate if not self.imgtemplate is None else None, screencap = self.screencap if not self.screencap is None else None, size = self.size if not self.size is None else None, 
+                    threshhold = self.threshold if not self.threshhold is None else None, **kwargs):
         im = image_grab(size) if screencap is None else screencap
 
         if im is None: return([])
