@@ -2,9 +2,7 @@ import cv2 as cv
 from numpy import shape, array
 from PIL import ImageGrab, ImageDraw
 
-global Debug
-
-global Debug
+Debug = bool(True)
 
 class Template_Matching:
     Debug = bool(True)
@@ -16,7 +14,7 @@ class Template_Matching:
     def match_image_multi(self, imgtemplate, screencap = None, size = None, threshhold = 0.8, **kwargs):
         im = image_grab(size) if screencap is None else screencap
 
-        if im == None: return([])
+        if im is None: return([])
 
         template = cv.imread(imgtemplate, 0)
 
@@ -29,7 +27,7 @@ class Template_Matching:
 
             try:
                 x,y = template.shape[::-1]
-            except: 
+            except IOError: 
                 if Debug == True: print('Failed to find shape Template.Shape most likely caused by image not being found') 
                 else: pass 
             try:
@@ -37,8 +35,7 @@ class Template_Matching:
 
                 res = cv.matchTemplate(img_gray, template, cv.TM_CCOEFF_NORMED)
                 min_val, max_val, min_loc, max_loc = cv.minMaxLoc(res)
-                print(max_val)
-                print(max_loc)
+
                 if max_val > threshold:
                     searching = True
                     draw = ImageDraw.Draw(im)
@@ -46,7 +43,7 @@ class Template_Matching:
                     location_list.append([(max_loc[0],max_loc[1]),(x,y)])
                     im.show()
                 else: searching = False
-            except: 
+            except IOError: 
                 if Debug == True: print('Could not process template, is either caused by Template.shape failing or issue with either image') 
                 else: pass
         return location_list
@@ -67,7 +64,7 @@ class Template_Matching:
             if max_val < threshold:
                 return []
             else: return (max_loc)
-        except: 
+        except IOError: 
             if Debug == True: print('Could not process template, is either caused by Template.shape failing or issue with either image') 
             else: pass
         return []
@@ -75,7 +72,7 @@ class Template_Matching:
 def image_grab(size):
     try:
         return(ImageGrab.grab(bbox = (size if not size is None else(None))))
-    except: 
+    except IOError: 
         if Debug == True: print('failed to grab screen')
         else: pass
         return(None)
