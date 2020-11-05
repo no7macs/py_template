@@ -7,16 +7,20 @@ Debug = bool(True)
 class Template_Matching:
     Debug = bool(True)
 
-    def __init__(self,multi_size):
+    def __init__(self, imgtemplate = None, screencap = None, size = None, threshhold = 0.8, **kwargs):
         #Should be able to declare all stuff ahead of time to lower on overhead
-        self.multi_size = bool(multi_size)
+        self.imgtemplate = imgtemplate
+        self.screencap = screencap
+        self.size = size
+        self.threshhold = threshhold
 
-    def match_image_multi(self, imgtemplate, screencap = None, size = None, threshhold = 0.8, **kwargs):
+    def match_image_multi(self, imgtemplate = imgtemplate if not imgtemplate is None else None, screencap = screencap if not screencap is None else None, size = size if not size is None else None, 
+                        threshhold = threshold if not threshhold is None else None, **kwargs):
         im = image_grab(size) if screencap is None else screencap
 
         if im is None: return([])
 
-        template = cv.imread(imgtemplate, 0)
+        template = cv.imread(imgtemplate if not imgtemplate is None else None , 0)
 
         location_list = []
         searching = bool(True)
@@ -48,14 +52,15 @@ class Template_Matching:
                 else: pass
         return location_list
 
-    def match_image(self, imgtemplate, screencap = None, size = None, threshhold = 0.8, **kwargs):
+    def match_image(self, imgtemplate = imgtemplate if not imgtemplate is None else None, screencap = screencap if not screencap is None else None, size = size if not size is None else None, 
+                        threshhold = threshold if not threshhold is None else None, **kwargs):
         im = image_grab(size) if screencap is None else screencap
 
         if im is None: return([])
 
         img_rgb = array(im)
         img_gray = cv.cvtColor(img_rgb, cv.COLOR_BGR2GRAY)
-        template = cv.imread(imgtemplate, 0)
+        template = cv.imread(imgtemplate if not imgtemplate is None else None , 0)
         try:
             threshold = 0.8 if threshhold is None else 0.8
 
