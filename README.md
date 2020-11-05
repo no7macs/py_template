@@ -4,7 +4,7 @@
 <BR>
   
 <h1>Description:</h1>
-An easy to use oop implementation of cv2 template matching in python for automation geared towards lowering the overhead used to speed up template matching on multiple images at a time.
+An easy to use implementation of cv2 template matching in python for automation geared towards lowering the overhead used to speed up template matching on multiple images at a time.
   
 <h1>Goals:</h1>
 <BR>
