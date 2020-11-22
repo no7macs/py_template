@@ -1,8 +1,6 @@
 import cv2 as cv
-from numpy import shape, array, linspace
+from numpy import shape, array
 from PIL import ImageGrab, ImageDraw
-import imutils
-from numpy.core import multiarray
 
 Debug = bool(True)
 
@@ -36,7 +34,7 @@ class Template_Matching():
     def match_image_multi(self, imgtemplate = None, screencap = None, size = None, threshhold = 0.8, multi_size = None, **kwargs):
         threshhold = self.threshhold if not self.threshhold is None else threshhold if threshhold is None else 0.8
         im = self.image_grab(self.size if not self.size is None else size) if not self.screencap is None else (self.screencap if not self.screencap is None else screencap)
-        multi_size = self.multi_size if multi_size == None else multi_size
+        multi_size = self.multi_size if multi_size is None else multi_size
 
         location_list = []
         max_val_list = []
@@ -63,7 +61,7 @@ class Template_Matching():
     def match_image(self, imgtemplate = None, screencap = None, size = None, threshhold = 0.8, multi_size = None, **kwargs):
         threshhold = self.threshhold if not self.threshhold is None else threshhold if threshhold is None else 0.8
         im = self.image_grab(self.size if not self.size is None else size) if not self.screencap is None else (self.screencap if not self.screencap is None else screencap)
-        multi_size = self.multi_size if multi_size == None else multi_size
+        multi_size = self.multi_size if multi_size is None else multi_size
 
         if im is None: return(0,(0,1))
 
