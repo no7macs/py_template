@@ -9,17 +9,15 @@ Debug = bool(True)
 class TemplateMatching():
 
     def __init__(self, imgtemplate = None, screenCap = None, size = (1920, 1080), threshHold = 0.8, multi_size = False, Debug = True, **kwargs):
-        #Should be able to declare all stuff ahead of time to lower on overhead
         self.imgtemplate = imgtemplate
-        self.screenCap = screenCap
         self.size = size
+        self.screenCap = self.image_grab(self.size) if screenCap is None else screenCap
         self.threshHold = threshHold
         self.multi_size = multi_size
         self.Debug = Debug
+        self.returnDat = []
 
-    #returns the size of the template
-    def getTamplateSize(self, imgtemplate = None): 
-        return (cv.imread(self.imgtemplate if not self.imgtemplate is None else imgtemplate , 0)).shape[::-1]
+    #------------------------------------------------------------------------------------#
 
     #grabs a screenshot
     def image_grab(self, size):
@@ -30,6 +28,7 @@ class TemplateMatching():
             else: pass
             return(None)
 
+    #------------------------------------------------------------------------------------#
     '''
     def multi_size_match(self, screenCap = None, imgtemplate = None):
         return
@@ -64,9 +63,9 @@ class TemplateMatching():
         return max_val_list,location_list
     '''
 
-    def match_image(self, threshHold = 0.8, **kwargs):
+    def match_image(self, **kwargs) -> bool:
         threshHold = self.threshHold if not self.threshHold is None else 0.8 #grab treshold, if not given set to 0.8
-        im = self.image_grab(self.size) if self.screenCap is None else self.screenCap #grabs screensize if size is not given
+        im = self.screenCap #grabs screensize if size is not given
 
         if im is None: return(0,(0,1))
 
@@ -80,12 +79,14 @@ class TemplateMatching():
             min_val, max_val, min_loc, max_loc = cv.minMaxLoc(cv.matchTemplate(img_gray, template, cv.TM_CCOEFF_NORMED))
             
             if max_val < threshHold:
-                return 0,(0,1),0
-            else: return max_val, max_loc, scale
+                return(False)
+            else: 
+                self.returnDat = (max_val, max_loc), scale, max_val
+                return(True)
         except IOError: 
             if self.Debug == True: print('Could not process template, is either caused by Template.shape failing or issue with either image') 
             else: pass
-        return 0,(0,1),0
+        return(False)
 
     #------------------------------------------------------------------------------------#
     #setters
@@ -105,3 +106,13 @@ class TemplateMatching():
     def setSize(self, size) -> None:
         self.size = size
         return()
+
+    #------------------------------------------------------------------------------------#
+    #getters
+
+    #returns the size of the template
+    def getTamplateSize(self, imgtemplate = None): 
+        return (cv.imread(self.imgtemplate if not self.imgtemplate is None else imgtemplate , 0)).shape[::-1]
+
+    def getResult(self) -> list:
+        return(self.returnDat)
