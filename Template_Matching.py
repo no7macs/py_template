@@ -8,7 +8,7 @@ Debug = bool(True)
 
 class TemplateMatching():
 
-    def __init__(self, imgtemplate = None, screenCap = None, size = (1920, 1080), threshHold = 0.8, multi_size = False, Debug = True, **kwargs):
+    def __init__(self, imgtemplate = None, screenCap = None, size = (0, 0, 1920, 1080), threshHold = 0.8, multi_size = False, Debug = True, **kwargs):
         self.imgtemplate = imgtemplate
         self.size = size
         self.screenCap = self.image_grab(self.size) if screenCap is None else screenCap
@@ -81,7 +81,7 @@ class TemplateMatching():
             if max_val < threshHold:
                 return(False)
             else: 
-                self.returnDat = (max_val, max_loc), scale, max_val
+                self.returnDat = (max_val, max_loc), scale
                 return(True)
         except IOError: 
             if self.Debug == True: print('Could not process template, is either caused by Template.shape failing or issue with either image') 
@@ -111,8 +111,8 @@ class TemplateMatching():
     #getters
 
     #returns the size of the template
-    def getTamplateSize(self, imgtemplate = None): 
-        return (cv.imread(self.imgtemplate if not self.imgtemplate is None else imgtemplate , 0)).shape[::-1]
+    def getTamplateSize(self): 
+        return (cv.imread(self.imgtemplate, 0)).shape[::-1]
 
     def getResult(self) -> list:
         return(self.returnDat)
