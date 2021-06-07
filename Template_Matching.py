@@ -15,7 +15,7 @@ class TemplateMatching():
         self.threshHold = threshHold
         self.multi_size = multi_size
         self.Debug = Debug
-        self.returnDat = []
+        self.returnDat = ((0,1), 0, 0)
 
     #------------------------------------------------------------------------------------#
 
@@ -67,7 +67,7 @@ class TemplateMatching():
         threshHold = self.threshHold if not self.threshHold is None else 0.8 #grab treshold, if not given set to 0.8
         im = self.screenCap #grabs screensize if size is not given
 
-        if im is None: return(0,(0,1))
+        if im is None: return(False)
 
         img_rgb = array(im)
         img_gray = cv.cvtColor(img_rgb, cv.COLOR_BGR2GRAY)
@@ -81,7 +81,7 @@ class TemplateMatching():
             if max_val < threshHold:
                 return(False)
             else: 
-                self.returnDat = (max_val, max_loc), scale
+                self.returnDat = max_loc, max_val, scale
                 return(True)
         except IOError: 
             if self.Debug == True: print('Could not process template, is either caused by Template.shape failing or issue with either image') 
